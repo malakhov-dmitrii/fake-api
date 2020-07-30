@@ -5,6 +5,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { Layout, Menu } from "antd";
 import { useRouter } from "next/router";
+import app from "../package.json";
 
 const { Header, Content, Footer } = Layout;
 // This default export is required in a new `pages/_app.js` file.
@@ -53,7 +54,7 @@ export default function MyApp({ Component, pageProps }) {
         </Content>
       </Layout>
       <Footer style={{ textAlign: "center" }}>
-        Fake API | REST API Placeholder | GitHub | 2020
+        Fake API v.{app.version} | REST API Placeholder | GitHub | 2020
       </Footer>
     </>
   );
