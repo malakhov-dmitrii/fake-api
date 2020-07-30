@@ -1,13 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { fakeSchema, flattenObject } from "../../../shared/helpers";
 import * as _ from "lodash";
-import low from "lowdb";
-import FileSync from "lowdb/adapters/FileSync";
 import { cors } from "../../../shared/lib/cors";
-
-const adapter = new FileSync("db.json");
-const db = low(adapter);
-db.defaults({ schemas: [], users: [] }).write();
 
 const post = (req: NextApiRequest, res: NextApiResponse) => {
   const r = fakeSchema(flattenObject(JSON.parse(req.body)));

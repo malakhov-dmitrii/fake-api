@@ -10,11 +10,6 @@
         "address.suite": "{{address.secondaryAddress}}"
       },
       "user": null
-    },
-    {
-      "id": "d065c785-dd7a-4185-b9a9-f8e8c4ab8ac8",
-      "body": "{\"name\":\"{{name.firstName}} {{name.lastName}}\",\"username\":\"{{internet.userName}}\",\"email\":\"{{internet.email}}\"}",
-      "user": null
     }
   ],
   "users": []
