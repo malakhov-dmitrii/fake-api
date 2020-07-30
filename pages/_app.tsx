@@ -11,23 +11,6 @@ const { Header, Content, Footer } = Layout;
 export default function MyApp({ Component, pageProps }) {
   const router = useRouter();
 
-  console.log(router.route);
-
-  const menuItems = [
-    {
-      route: "/",
-      title: "Home",
-    },
-    {
-      route: "/templates",
-      title: "Template examples",
-    },
-    {
-      route: "/create",
-      title: "Create",
-    },
-  ];
-
   return (
     <>
       <Head>
@@ -63,11 +46,6 @@ export default function MyApp({ Component, pageProps }) {
         </Header>
         <Content className="pl-50 pr-50 mt-30">
           <div className="container">
-            {/* <Breadcrumb style={{ margin: "16px 0" }}>
-            <Breadcrumb.Item>Home</Breadcrumb.Item>
-            <Breadcrumb.Item>List</Breadcrumb.Item>
-            <Breadcrumb.Item>App</Breadcrumb.Item>
-          </Breadcrumb> */}
             <div className="site-layout-content">
               <Component {...pageProps} />
             </div>

@@ -32,3 +32,36 @@ export const composeTodo = (
   };
   return res;
 };
+
+export function flattenObject(ob) {
+  let toReturn = {};
+  let flatObject;
+  for (let i in ob) {
+    // console.log(i + " " + typeof ob[i]);
+    if (!ob.hasOwnProperty(i)) {
+      continue;
+    }
+    //Exclude arrays from the final result
+    //Check this http://stackoverflow.com/questions/4775722/check-if-object-is-array
+    if (ob[i] && Array === ob[i].constructor) {
+      continue;
+    }
+    if (typeof ob[i] === "object") {
+      flatObject = flattenObject(ob[i]);
+      for (let x in flatObject) {
+        if (!flatObject.hasOwnProperty(x)) {
+          continue;
+        }
+        //Exclude arrays from the final result
+        if (flatObject[x] && Array === flatObject.constructor) {
+          continue;
+        }
+        // @ts-ignore
+        toReturn[i + (!!isNaN(x) ? "." + x : "")] = flatObject[x];
+      }
+    } else {
+      toReturn[i] = ob[i];
+    }
+  }
+  return toReturn;
+}
