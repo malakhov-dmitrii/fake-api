@@ -8,6 +8,16 @@ const sendError = (res, message = "something went wrong") => {
   });
 };
 
+interface TodosRequest {
+  id: number;
+  limit: number;
+  title: string;
+  completed: boolean;
+  userId: number;
+  sort: "asc" | "desc";
+  sortBy: "id" | "userId" | "completed" | "title";
+}
+
 export default (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
     const {
@@ -19,9 +29,11 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
       sort = "asc",
       sortBy = "id",
     } = req.query;
+    // @ts-ignore
     if (["desc", "asc"].indexOf(sort) === -1) {
       sendError(res, "'sort' param is incorrect");
     }
+    // @ts-ignore
     if (["id", "userId", "completed", "title"].indexOf(sortBy) === -1) {
       sendError(res, "'sortBy' param is incorrect");
     }
@@ -33,6 +45,7 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
     } else {
       const emptyArr = Array.from({ length: Number(limit) });
       const todos = emptyArr.map((_, arrId) =>
+        // @ts-ignore
         composeTodo(arrId, Number(id), Number(userId), completed, title)
       );
 
