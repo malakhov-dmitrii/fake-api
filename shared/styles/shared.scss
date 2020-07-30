@@ -1,0 +1,75 @@
+@import "variables";
+
+$sizes: "5" 5px, "10" 10px, "15" 15px, "20" 20px, "25" 25px, "30" 30px,
+  "50" 50px;
+$positions: "t" top, "b" bottom, "l" left, "r" right;
+
+// Таким образом мы получаем классы типа mt-5, m-5, mb-5, etc...
+@each $i in $sizes {
+  .m-#{nth($i, 1)} {
+    margin: nth($i, 2) !important;
+  }
+  .p-#{nth($i, 1)} {
+    padding: nth($i, 2) !important;
+  }
+
+  @each $pos in $positions {
+    .m#{nth($pos, 1)}-#{nth($i, 1)} {
+      margin-#{nth($pos, 2)}: nth($i, 2) !important;
+    }
+  }
+
+  @each $pos in $positions {
+    .p#{nth($pos, 1)}-#{nth($i, 1)} {
+      padding-#{nth($pos, 2)}: nth($i, 2) !important;
+    }
+  }
+}
+
+.primary {
+  color: $black;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.circle {
+  border-radius: 50%;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.nowrap {
+  flex-wrap: nowrap;
+}
+
+.jc-sb {
+  justify-content: space-between;
+}
+
+.ai-c {
+  align-items: center;
+}
+
+.noselect {
+  user-select: none;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.column {
+  flex-direction: column;
+}
+
+.underline {
+  text-decoration: underline;
+}
