@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import faker from "faker";
+import { cors } from "../../../../shared/lib/cors";
 
 export const composeUser = (id: Number) => {
   const res = {
@@ -28,7 +29,9 @@ export const composeUser = (id: Number) => {
   return res;
 };
 
-export default (req: NextApiRequest, res: NextApiResponse) => {
+export default async (req: NextApiRequest, res: NextApiResponse) => {
+  await cors(req, res);
+
   const user = composeUser(Number(req.query.id));
   res.json(user);
 };

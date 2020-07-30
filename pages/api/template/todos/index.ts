@@ -1,5 +1,6 @@
 import { composeTodo } from "../../../../shared/helpers";
 import { NextApiRequest, NextApiResponse } from "next";
+import { cors } from "../../../../shared/lib/cors";
 const _ = require("lodash");
 
 const sendError = (res, message = "something went wrong") => {
@@ -8,17 +9,9 @@ const sendError = (res, message = "something went wrong") => {
   });
 };
 
-interface TodosRequest {
-  id: number;
-  limit: number;
-  title: string;
-  completed: boolean;
-  userId: number;
-  sort: "asc" | "desc";
-  sortBy: "id" | "userId" | "completed" | "title";
-}
+export default async (req: NextApiRequest, res: NextApiResponse) => {
+  await cors(req, res);
 
-export default (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
     const {
       id,

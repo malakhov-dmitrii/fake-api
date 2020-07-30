@@ -5,6 +5,7 @@ import * as _ from "lodash";
 import low from "lowdb";
 import FileSync from "lowdb/adapters/FileSync";
 import uuid from "uuid";
+import { cors } from "../../../../shared/lib/cors";
 
 const adapter = new FileSync("db.json");
 const db = low(adapter);
@@ -24,7 +25,9 @@ const get = (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
-export default (req: NextApiRequest, res: NextApiResponse) => {
+export default async (req: NextApiRequest, res: NextApiResponse) => {
+  await cors(req, res);
+
   res.statusCode = 200;
   const METHOD = req.method;
 
