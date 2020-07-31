@@ -5,11 +5,13 @@ import { okaidia } from "react-syntax-highlighter/dist/cjs/styles/prism";
 
 export default function Home() {
   const [showExample, setShowExample] = useState(false);
-  useEffect(() => {}, []);
-
-  const code = `fetch("${location.origin}/template/todos") 
-  .then(r => r.json()) 
-  .then(json => console.log(json))`;
+  const [code, setCode] = useState("");
+  useEffect(() => {
+    const codeStr = `fetch("${location.origin}/template/todos") 
+    .then(r => r.json()) 
+    .then(json => console.log(json))`;
+    setCode(codeStr);
+  }, []);
 
   const response = `[
   {
