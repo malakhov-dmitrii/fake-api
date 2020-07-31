@@ -1,7 +1,6 @@
 {
-  "name": "fakeApi",
   "version": 2,
   "env": {
-    "MONGODB_URI": "@MONGODB_URI"
+    "MONGODB_URI": "@mongodb_uri"
   }
 }

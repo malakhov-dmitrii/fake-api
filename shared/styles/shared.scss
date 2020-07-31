@@ -70,6 +70,10 @@ $positions: "t" top, "b" bottom, "l" left, "r" right;
   cursor: pointer;
 }
 
+.text-center {
+  text-align: center;
+}
+
 .column {
   flex-direction: column;
 }

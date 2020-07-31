@@ -1,17 +1,13 @@
-import Head from "next/head";
-import { Layout, Menu, Breadcrumb, Typography, Divider, Button } from "antd";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { Typography, Divider, Button } from "antd";
 import { useEffect, useState } from "react";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { okaidia } from "react-syntax-highlighter/dist/cjs/styles/prism";
-import { T } from "antd/lib/upload/utils";
-
-const { Header, Content, Footer } = Layout;
 
 export default function Home() {
   const [showExample, setShowExample] = useState(false);
   useEffect(() => {}, []);
 
-  const code = `fetch("https://projectname/template/todos") 
+  const code = `fetch("${location.origin}/template/todos") 
   .then(r => r.json()) 
   .then(json => console.log(json))`;
 

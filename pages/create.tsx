@@ -9,12 +9,20 @@ import {
   message,
 } from "antd";
 import TextArea from "antd/lib/input/TextArea";
+import {
+  PlayCircleOutlined,
+  SaveOutlined,
+  DeliveredProcedureOutlined,
+} from "@ant-design/icons";
+import Link from "next/link";
 
 // TODO: Сохранение id схемы
 // Страница схемы
 // Переход на страницу с шаблонами
 
 const Create = () => {
+  const [schemaName, setSchemaName] = useState("");
+  const [savedSchemaId, setSavedSchemaId] = useState("");
   const [sampleRes, setSampleRes] = useState(null);
   const [sampleJSON, setSampleJSON] = useState(
     JSON.stringify(
@@ -27,6 +35,23 @@ const Create = () => {
       2
     )
   );
+
+  const onSave = () => {
+    try {
+      const body = JSON.parse(sampleJSON);
+      fetch("/api/schema/new", {
+        method: "POST",
+        body: JSON.stringify({ body, name: schemaName }),
+      })
+        .then((r) => r.json())
+        .then((r) => setSavedSchemaId(r.id))
+        .catch(() => {
+          message.error("Server error - Schema invalid");
+        });
+    } catch (error) {
+      message.error("Error with parsing input JSON or Internal Server Error");
+    }
+  };
 
   const onTry = () => {
     try {
@@ -44,7 +69,7 @@ const Create = () => {
           message.error("Server error - Schema invalid");
         });
     } catch (error) {
-      message.error("Error with parsing input JSON");
+      message.error("Error with parsing input JSON or Internal Server Error");
     }
   };
 
@@ -58,6 +83,48 @@ const Create = () => {
       </div>
       <Divider></Divider>
 
+      <div className="mb-20">
+        <Typography.Title level={4}>Enter schema name to save</Typography.Title>
+        <Input
+          value={schemaName}
+          onChange={(e) => setSchemaName(e.target.value)}
+          placeholder="Type here..."
+          style={{ width: "300px" }}
+        />
+
+        <Button
+          className="ml-15"
+          type="primary"
+          disabled={!schemaName.length}
+          icon={<SaveOutlined />}
+          onClick={onSave}
+        >
+          Save
+        </Button>
+
+        <Link
+          href="/templates/custom/[id]"
+          as={`/templates/custom/${savedSchemaId}`}
+        >
+          <Button
+            className="ml-15"
+            type="link"
+            disabled={!savedSchemaId}
+            icon={<PlayCircleOutlined />}
+          >
+            Explore this API
+          </Button>
+        </Link>
+      </div>
+
+      {savedSchemaId && (
+        <div>
+          <Typography.Paragraph>
+            <b>Schema saved - id: {savedSchemaId}</b>
+          </Typography.Paragraph>
+        </div>
+      )}
+
       <div className="d-flex">
         <div>
           <TextArea
@@ -69,11 +136,13 @@ const Create = () => {
           ></TextArea>
         </div>
         <div className="d-flex column m-15 jc-c">
-          <Button className="mt-5 mb-5" type="default" onClick={() => onTry()}>
+          <Button
+            className="mt-5 mb-5"
+            type="default"
+            onClick={() => onTry()}
+            icon={<DeliveredProcedureOutlined />}
+          >
             Try
-          </Button>
-          <Button className="mt-5 mb-5" type="primary" disabled>
-            Save
           </Button>
         </div>
 

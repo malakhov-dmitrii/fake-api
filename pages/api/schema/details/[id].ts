@@ -16,7 +16,7 @@ const get = async (req: NextApiRequest, res: NextApiResponse) => {
   });
 
   if (schema) {
-    res.json(fakeSchema(schema.body));
+    res.json(schema);
   } else {
     res.statusCode = 404;
     res.json({
@@ -34,8 +34,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   switch (METHOD) {
     case "GET":
       get(req, res);
-      break;
-    case "POST":
       break;
     default:
       res.json({ message: "Unsupported method" });

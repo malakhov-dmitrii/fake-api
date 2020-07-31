@@ -1,22 +1,27 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { set, fakeSchema } from "../../../shared/helpers";
-import { fake } from "faker";
 import * as _ from "lodash";
-import low from "lowdb";
-import FileSync from "lowdb/adapters/FileSync";
-import { v4 as uuidv4 } from "uuid";
 import { cors } from "../../../shared/lib/cors";
+import { connectToDatabase } from "../../../shared/db/connect";
+import { flattenObject } from "../../../shared/helpers";
 
-const adapter = new FileSync("db.json");
-const db = low(adapter);
-db.defaults({ schemas: [], users: [] }).write();
+const post = async (req: NextApiRequest, res: NextApiResponse) => {
+  const db = await connectToDatabase(process.env.MONGODB_URI);
+  const collection = await db.collection("schemas");
 
-const post = (req: NextApiRequest, res: NextApiResponse) => {
-  // Add a schema
-  const id = uuidv4();
-  db.get("schemas").push({ id, body: req.body, user: null }).write();
+  try {
+    const body = JSON.parse(req.body);
+    const data = {
+      body: flattenObject(body.body),
+      name: body.name,
+      user: null,
+    };
 
-  res.json({ id });
+    const r = await collection.insertOne(data);
+
+    res.json({ id: r.insertedId });
+  } catch (error) {
+    res.json({ error: "Error occurred" });
+  }
 };
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {

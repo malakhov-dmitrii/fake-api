@@ -1,10 +1,31 @@
+import { Typography, Button } from "antd";
+
 const Error = ({ statusCode }) => {
+  const errorMessage = () => {
+    switch (statusCode) {
+      case 404:
+        return (
+          <>
+            <Typography.Paragraph>Page not found</Typography.Paragraph>
+            <Button size="small" type="primary" href="/">
+              Go home
+            </Button>
+          </>
+        );
+      case 500:
+        return (
+          <Typography.Paragraph>Internal server error</Typography.Paragraph>
+        );
+      default:
+        return <Typography.Paragraph>Some client error</Typography.Paragraph>;
+    }
+  };
   return (
-    <p>
-      {statusCode
-        ? `An error ${statusCode} occurred on server`
-        : "An error occurred on client"}
-    </p>
+    <div className="text-center mt-50">
+      <Typography.Title>{statusCode}</Typography.Title>
+
+      {errorMessage()}
+    </div>
   );
 };
 

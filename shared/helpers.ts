@@ -2,7 +2,7 @@ import faker from "faker";
 import * as _ from "lodash";
 
 export const set = (obj, path, val) => {
-  const keys = path.split(".");
+  const keys = path.split("|");
   const lastKey = keys.pop();
   const lastObj = keys.reduce((obj, key) => (obj[key] = obj[key] || {}), obj);
   lastObj[lastKey] = val;
@@ -32,6 +32,20 @@ export const composeTodo = (
   };
   return res;
 };
+export const composePost = (
+  arrId: number,
+  id?: number,
+  userId?: number,
+  title?
+) => {
+  const res = {
+    id: id || arrId,
+    userId: userId || faker.random.number(),
+    title: title || faker.random.words(_.random(3, 10)),
+    body: faker.lorem.paragraph(),
+  };
+  return res;
+};
 
 export function flattenObject(ob) {
   let toReturn = {};
@@ -57,7 +71,7 @@ export function flattenObject(ob) {
           continue;
         }
         // @ts-ignore
-        toReturn[i + (!!isNaN(x) ? "." + x : "")] = flatObject[x];
+        toReturn[i + (!!isNaN(x) ? "|" + x : "")] = flatObject[x];
       }
     } else {
       toReturn[i] = ob[i];
