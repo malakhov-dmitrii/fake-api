@@ -54,7 +54,23 @@ export default function MyApp({ Component, pageProps }) {
         </Content>
       </Layout>
       <Footer style={{ textAlign: "center" }}>
-        Fake API v.{app.version} | REST API Placeholder | GitHub | 2020
+        Fake API v.{app.version} | REST API Placeholder |{" "}
+        <a
+          target="_blank"
+          rel="noopener"
+          href="https://github.com/Hennessy811/fake-api"
+        >
+          GitHub
+        </a>
+        |{" "}
+        <a
+          target="_blank"
+          rel="noopener"
+          href="mailto:mitia2022@gmail.com?subject=Fake REST API Generator question"
+        >
+          Contact me
+        </a>{" "}
+        | 2020
       </Footer>
     </>
   );

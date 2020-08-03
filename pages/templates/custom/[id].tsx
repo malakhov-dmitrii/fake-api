@@ -5,25 +5,116 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { okaidia } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
+const usersTemplate = [
+  100,
+  {
+    id: "{{random.number}}",
+    name: "{{name.firstName}} {{name.lastName}}",
+    username: "{{internet.userName}}",
+    email: "{{internet.email}}",
+    address: {
+      street: "{{address.streetName}}",
+      suite: "{{address.secondaryAddress}}",
+      city: "{{address.city}}",
+      zipcode: "{{address.zipCode}}",
+      geo: {
+        lat: "{{address.latitude}}",
+        lng: "{{address.longitude}}",
+      },
+    },
+    phone: "{{phone.phoneNumber}}",
+    website: "{{internet.domainName}}",
+    company: {
+      name: "{{company.companyName}}",
+      catchPhrase: "{{company.catchPhrase}}",
+      bs: "{{company.bs}}",
+    },
+  },
+];
+
+const todosTemplate = [
+  100,
+  {
+    id: "{{random.number}}",
+    userId: "{{random.number}}",
+    title: "{{random.words(3)}}",
+    completed: "{{random.boolean}}",
+  },
+];
+
+const postsTemplate = [
+  100,
+  {
+    id: "{{random.number}}",
+    userId: "{{random.number}}",
+    title: "{{random.words(3)}}",
+    body: "{{lorem.paragraph}}",
+  },
+];
+
+const isTemplatePage = (id) => {
+  return id === "Users" || id === "Todos" || id === "Posts";
+};
+
 const CustomTemplate = (props) => {
   const { id } = props;
   const [schemaDetails, setSchemaDetails] = useState(null);
-  const [getReponseExample, setGetReponseExample] = useState(null);
+  const [getResponseExample, setGetResponseExample] = useState(null);
   const [requestExampleURL, setRequestExampleURL] = useState("");
 
+  const handleTemplatePage = () => {
+    switch (id) {
+      case "Users":
+        setSchemaDetails({
+          name: "Users",
+          body: usersTemplate,
+          availableParams: ["sortBy", "sort", "limit", "userId"],
+          getByIdAvailable: true,
+        });
+        break;
+      case "Posts":
+        setSchemaDetails({
+          name: "Posts",
+          body: postsTemplate,
+          availableParams: ["sortBy", "sort", "limit", "userId"],
+          getByIdAvailable: true,
+        });
+        break;
+      case "Todos":
+        setSchemaDetails({
+          name: "Todos",
+          body: todosTemplate,
+          availableParams: ["sortBy", "sort", "limit", "userId"],
+          getByIdAvailable: true,
+        });
+        break;
+      default:
+        break;
+    }
+  };
+
   const getSchemaData = () => {
-    fetch(`/api/schema/details/${id}`)
-      .then((r) => r.json())
-      .then((r) => {
-        setSchemaDetails(r);
-      });
+    if (isTemplatePage(id)) {
+      handleTemplatePage();
+    } else {
+      fetch(`/api/schema/details/${id}`)
+        .then((r) => r.json())
+        .then((r) => {
+          setSchemaDetails(r);
+        });
+    }
   };
 
   useEffect(() => {
     getSchemaData();
 
     const baseURL = location?.origin || "https://fake-api-builder.vercel.app/";
-    const requestURL = `${baseURL}/api/schema/get/${id}`;
+    let requestURL = `${baseURL}/api/schema/get/${id.toLowerCase()}`;
+
+    if (isTemplatePage(id)) {
+      requestURL = `${baseURL}/api/template/${id.toLowerCase()}`;
+    }
+
     setRequestExampleURL(requestURL);
   }, []);
 
@@ -31,11 +122,17 @@ const CustomTemplate = (props) => {
   .then(r => r.json()) 
   .then(json => console.log(json))`;
 
+  const reqGetOneByIdExampleStr = `fetch("${requestExampleURL}/1") 
+  .then(r => r.json()) 
+  .then(json => console.log(json))`;
+
   const tryGET = () => {
     fetch(requestExampleURL)
       .then((r) => r.json())
-      .then((json) => setGetReponseExample(json));
+      .then((json) => setGetResponseExample(json));
   };
+
+  console.log(schemaDetails);
 
   return (
     <div>
@@ -86,17 +183,50 @@ const CustomTemplate = (props) => {
                   </Button>
                 </CopyToClipboard>
               </div>
-              {getReponseExample && (
+              {getResponseExample && (
                 <div>
                   <div>Response:</div>
-                  <div>
+                  <div style={{ maxHeight: "500px", overflow: "scroll" }}>
                     <SyntaxHighlighter language="javascript" style={okaidia}>
-                      {JSON.stringify(getReponseExample, null, 2)}
+                      {JSON.stringify(getResponseExample, null, 2)}
                     </SyntaxHighlighter>
                   </div>
                 </div>
               )}
             </div>
+
+            <Divider></Divider>
+
+            {schemaDetails.getByIdAvailable && (
+              <>
+                <div>
+                  <Typography.Title level={4}>
+                    Get one item by ID
+                  </Typography.Title>
+
+                  <div>
+                    <div>Request example:</div>
+                    <div>
+                      <SyntaxHighlighter language="javascript" style={okaidia}>
+                        {reqGetOneByIdExampleStr}
+                      </SyntaxHighlighter>
+                    </div>
+                  </div>
+                </div>
+                <Divider></Divider>
+              </>
+            )}
+
+            {schemaDetails.availableParams?.length && (
+              <div>
+                <Typography.Title level={4}>
+                  Available filter options
+                </Typography.Title>
+                {schemaDetails.availableParams.map((i) => {
+                  return <div>{i}</div>;
+                })}
+              </div>
+            )}
           </div>
         </>
       )}
@@ -105,8 +235,6 @@ const CustomTemplate = (props) => {
 };
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  console.log(context.params);
-
   return {
     props: context.params, // will be passed to the page component as props
   };

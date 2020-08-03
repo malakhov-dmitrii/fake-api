@@ -1,7 +1,9 @@
-import React from "react";
-import { Typography, Divider, Row, Col, Card } from "antd";
+import React, { useState } from "react";
+import { Typography, Divider, Row, Col, Card, Input, Button, List } from "antd";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { okaidia } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import { SearchOutlined, CodeFilled } from "@ant-design/icons";
+import Link from "next/link";
 
 const usersExample = `
 [
@@ -74,7 +76,21 @@ const postsExample = `
   },
 ]`;
 
+const examplesList = [
+  { title: "Users", content: usersExample },
+  { title: "Todos", content: todosExample },
+  { title: "Posts", content: postsExample },
+];
+
 const Templates = () => {
+  const [nameOrId, setNameOrId] = useState("");
+  const [searchResult, setSearchResult] = useState(null);
+
+  const onFind = () => {
+    fetch(`/api/schema/find?nameOrId=${nameOrId}`)
+      .then((r) => r.json())
+      .then((r) => setSearchResult(r));
+  };
   return (
     <>
       <div className="title mt-30">
@@ -85,42 +101,95 @@ const Templates = () => {
       </div>
       <Divider></Divider>
       <div>
-        <Typography.Title level={2}>Find custom schema by id</Typography.Title>
+        <Typography.Title level={2}>
+          Find custom schema by <span style={{ fontWeight: 100 }}>id</span> or{" "}
+          <span style={{ fontWeight: 100 }}>name</span>
+        </Typography.Title>
+
+        <div className="d-flex">
+          <Input
+            size="large"
+            placeholder="Enter id or name"
+            value={nameOrId}
+            onChange={(e) => setNameOrId(e.target.value)}
+          />
+          <Button
+            size="large"
+            className="ml-15"
+            type="primary"
+            onClick={onFind}
+            disabled={!nameOrId.length}
+            icon={<SearchOutlined />}
+          >
+            Find
+          </Button>
+        </div>
+
+        {searchResult && (
+          <div className="mt-5">
+            {!searchResult.error ? (
+              <>
+                Go to the page:{" "}
+                <Link
+                  href="/templates/custom/[id]"
+                  as={`/templates/custom/${searchResult.schema._id}`}
+                >
+                  <a target="_blank" rel="noopener">
+                    {searchResult.schema.name}
+                  </a>
+                </Link>
+              </>
+            ) : (
+              "Nothing found"
+            )}
+          </div>
+        )}
       </div>
       <Divider></Divider>
       <div>
         <Typography.Title level={2}>Template resourses</Typography.Title>
       </div>
       <div>
-        <Row gutter={16}>
-          <Col span={8}>
-            <Card title="Users">
-              <div className="templateCardContent">
-                <SyntaxHighlighter language="json" style={okaidia}>
-                  {usersExample}
-                </SyntaxHighlighter>
-              </div>
-            </Card>
-          </Col>
-          <Col span={8}>
-            <Card title="Todos">
-              <div className="templateCardContent">
-                <SyntaxHighlighter language="json" style={okaidia}>
-                  {todosExample}
-                </SyntaxHighlighter>
-              </div>
-            </Card>
-          </Col>
-          <Col span={8}>
-            <Card title="Posts">
-              <div className="templateCardContent">
-                <SyntaxHighlighter language="json" style={okaidia}>
-                  {postsExample}
-                </SyntaxHighlighter>
-              </div>
-            </Card>
-          </Col>
-        </Row>
+        <List
+          grid={{
+            gutter: 16,
+            xs: 1,
+            sm: 1,
+            md: 3,
+            lg: 3,
+            xl: 3,
+            xxl: 3,
+          }}
+          dataSource={examplesList}
+          renderItem={(item) => (
+            <List.Item>
+              <Card
+                title={
+                  <div className="d-flex ai-c jc-sb">
+                    <div>{item.title}</div>
+                    <Link
+                      href="/templates/custom/[id]"
+                      as={`/templates/custom/${item.title}`}
+                    >
+                      <a target="_blank" rel="noopener">
+                        <Button icon={<CodeFilled />} type="link">
+                          Explore
+                        </Button>
+                      </a>
+                    </Link>
+                  </div>
+                }
+              >
+                {" "}
+                <div className="templateCardContent">
+                  <SyntaxHighlighter language="json" style={okaidia}>
+                    {item.content}
+                  </SyntaxHighlighter>
+                </div>
+              </Card>
+            </List.Item>
+          )}
+        />
       </div>
     </>
   );

@@ -3,40 +3,37 @@ import {
   fakeSchema,
   createArray,
   flattenObject,
-} from "../../../../shared/helpers";
+} from "../../../shared/helpers";
 import * as _ from "lodash";
 
-import { cors } from "../../../../shared/lib/cors";
-import { connectToDatabase } from "../../../../shared/db/connect";
+import { cors } from "../../../shared/lib/cors";
+import { connectToDatabase } from "../../../shared/db/connect";
 import { ObjectId } from "mongodb";
 
 const get = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { id } = req.query;
+  const { nameOrId } = req.query;
+
   const db = await connectToDatabase(process.env.MONGODB_URI);
   const collection = await db.collection("schemas");
+  console.log({ nameOrId, typeof: typeof nameOrId });
 
-  const schema = await collection.findOne({
-    _id: new ObjectId(id),
-  });
+  try {
+    const schema = await collection.findOne({
+      name: nameOrId,
+    });
 
-  if (schema) {
-    console.log(schema);
-    let result;
-
-    if (schema.body.constructor === Array) {
-      result = createArray(schema.body).map(() => {
-        return fakeSchema(flattenObject(schema.body[1]));
-      });
+    if (schema) {
+      console.log(schema);
+      res.json({ schema });
     } else {
-      result = fakeSchema(schema.body);
+      res.statusCode = 404;
+      res.json({
+        error: `Item with name or id '${nameOrId}' was not found`,
+      });
     }
-    console.log(fakeSchema(flattenObject(schema.body[1])));
-
-    res.json(result);
-  } else {
-    res.statusCode = 404;
+  } catch (error) {
     res.json({
-      error: `Item with id '${id}' was not found`,
+      error: `Item with name or id '${nameOrId}' was not found`,
     });
   }
 };

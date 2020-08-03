@@ -1,18 +1,19 @@
-import React, { useState, FC, useReducer, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Typography,
   Divider,
-  Tree,
   Input,
-  Select,
   Button,
   message,
+  Tooltip,
+  List,
 } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import {
   PlayCircleOutlined,
   SaveOutlined,
   DeliveredProcedureOutlined,
+  QuestionCircleOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
 
@@ -24,6 +25,7 @@ const Create = () => {
   const [schemaName, setSchemaName] = useState("");
   const [savedSchemaId, setSavedSchemaId] = useState("");
   const [sampleRes, setSampleRes] = useState(null);
+  const [savedSchemas, setSavedSchemas] = useState([]);
   const [sampleJSON, setSampleJSON] = useState(
     JSON.stringify(
       {
@@ -36,15 +38,45 @@ const Create = () => {
     )
   );
 
+  const getSavedFromLocal = () => {
+    const saved = localStorage.getItem("savedSchemas");
+    let jsonSaved = [];
+    if (saved) {
+      jsonSaved = JSON.parse(saved);
+      console.log(jsonSaved);
+    }
+    return jsonSaved;
+  };
+
+  useEffect(() => {
+    let saved = getSavedFromLocal();
+    setSavedSchemas(saved);
+  }, []);
+
   const onSave = () => {
     try {
       const body = JSON.parse(sampleJSON);
+      const savingSchema = { body, name: schemaName };
       fetch("/api/schema/new", {
         method: "POST",
-        body: JSON.stringify({ body, name: schemaName }),
+        body: JSON.stringify(savingSchema),
       })
         .then((r) => r.json())
-        .then((r) => setSavedSchemaId(r.id))
+        .then((r) => {
+          const existingItems = getSavedFromLocal();
+          if (existingItems.length) {
+            existingItems.push({ ...savingSchema, id: r.id });
+            localStorage.setItem("savedSchemas", JSON.stringify(existingItems));
+            setSavedSchemas(existingItems);
+          } else {
+            localStorage.setItem(
+              "savedSchemas",
+              JSON.stringify([{ ...savingSchema, id: r.id }])
+            );
+            setSavedSchemas([{ ...savingSchema, id: r.id }]);
+          }
+          setSavedSchemaId(r.id);
+        })
         .catch(() => {
           message.error("Server error - Schema invalid");
         });
@@ -79,6 +111,13 @@ const Create = () => {
         <Typography.Title>Create your own schema</Typography.Title>
         <Typography.Paragraph>
           Mock API | Use for tutorials | Or just play around
+        </Typography.Paragraph>
+        <Typography.Paragraph>
+          Please refer to{" "}
+          <a href="http://marak.github.io/faker.js/">
+            Faker documentation page
+          </a>
+          . All values are generated with "faker.fake()" method
         </Typography.Paragraph>
       </div>
       <Divider></Divider>
@@ -153,7 +192,36 @@ const Create = () => {
         ></TextArea>
       </div>
 
-      {/* <Tree showLine treeData={treeData} /> */}
+      <Divider></Divider>
+      <Typography.Title level={4} className="mt-15">
+        Your last saved schemas{" "}
+        <Tooltip title="This items are stored locally. Opens new tab">
+          <QuestionCircleOutlined
+            style={{ fontSize: "16px", color: "#aeaeae" }}
+          />
+        </Tooltip>
+      </Typography.Title>
+
+      <List
+        size="small"
+        bordered
+        dataSource={savedSchemas}
+        renderItem={(item) => (
+          <List.Item>
+            <Link
+              href="/templates/custom/[id]"
+              as={`/templates/custom/${item.id}`}
+            >
+              <a target="_blank" rel="noopener">
+                {item.name}
+              </a>
+            </Link>
+          </List.Item>
+        )}
+      />
+      {/* {savedSchemas.map((i, idx) => (
+        <div></div>
+      ))} */}
     </>
   );
 };

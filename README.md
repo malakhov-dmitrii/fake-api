@@ -1,30 +1,30 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This project is created to allow you to create your own API mocks based on fake data and Faker.js package.
 
-## Getting Started
+# Fake REST API generator
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+- Existing templates, like in JSONPlaceholder. With filters and sorting.
+- - Users
+- - Todos
+- - Posts
+- - - Each template contain code sample which allow you to recreate it on your own.
+- Tooling to create your schemas and templates you can use in any of your project, or tutorial, or just to play with new technology.
+- - Save schemas and access them by unique URLs.
+- - Share that URLs with anyone.
+- - Saved schemas save in your localStorage so you can get easy access to them.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Plans on the future
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+- Create advanced schema constructor
+- User account
+- - Created schemas attach to profile
+- - Simpler sharing
+- - Forking
+- - Grouping schemas into projects
 
-## Learn More
+## Contact me and support project if you like it
 
-To learn more about Next.js, take a look at the following resources:
+Telegram: @Hennessy81
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+E-mail: mitia2022@gmail.com

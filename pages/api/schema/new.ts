@@ -2,17 +2,27 @@ import { NextApiRequest, NextApiResponse } from "next";
 import * as _ from "lodash";
 import { cors } from "../../../shared/lib/cors";
 import { connectToDatabase } from "../../../shared/db/connect";
-import { flattenObject } from "../../../shared/helpers";
+import { flattenObject, createArray } from "../../../shared/helpers";
 
 const post = async (req: NextApiRequest, res: NextApiResponse) => {
   const db = await connectToDatabase(process.env.MONGODB_URI);
   const collection = await db.collection("schemas");
 
   try {
-    const body = JSON.parse(req.body);
+    const { body, name } = JSON.parse(req.body);
+
+    let record;
+
+    // if (body.constructor === Array) {
+    //   let arrRes = createArray(body).map(() => flattenObject(body[1]));
+    //   record = arrRes;
+    // } else {
+    //   record = flattenObject(body);
+    // }
+
     const data = {
-      body: flattenObject(body.body),
-      name: body.name,
+      body,
+      name: name,
       user: null,
     };
 
