@@ -32,6 +32,10 @@ export default function MyApp({ Component, pageProps }) {
           rel="stylesheet"
           href="https://highlightjs.org/static/demo/styles/railscasts.css"
         />
+        <meta
+          name="google-site-verification"
+          content="x4xXwn1gLN0qwxkx1lMzcbZ6M3Y2VMN9eUE7kkrtkPo"
+        />
       </Head>
       <Layout className="layout">
         <Header>
