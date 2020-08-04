@@ -6,11 +6,22 @@ import Link from "next/link";
 import { Layout, Menu } from "antd";
 import { useRouter } from "next/router";
 import app from "../package.json";
+import { useEffect } from "react";
+import TagManager from "react-gtm-module";
 
 const { Header, Content, Footer } = Layout;
+
+const tagManagerArgs = {
+  gtmId: "GTM-MWPWFTP",
+};
+
 // This default export is required in a new `pages/_app.js` file.
 export default function MyApp({ Component, pageProps }) {
   const router = useRouter();
+
+  useEffect(() => {
+    TagManager.initialize(tagManagerArgs);
+  }, []);
 
   return (
     <>
