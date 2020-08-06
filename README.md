@@ -1,4 +1,4 @@
-This project is created to allow you to create your own API mocks based on fake data and Faker.js package.
+This project is created to allow you to create your own API mocks based on generated data and Faker.js package.
 
 # Fake REST API generator
 

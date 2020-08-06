@@ -26,9 +26,9 @@ export default function Home() {
   return (
     <>
       <div className="title mt-30">
-        <Typography.Title>FAKE API</Typography.Title>
+        <Typography.Title>Mock API</Typography.Title>
         <Typography.Paragraph>
-          Fake Online REST API for Testing and Prototyping
+          Mock Online REST API for Testing and Prototyping
         </Typography.Paragraph>
         <Typography.Paragraph>
           Create and share your own schema!
@@ -37,7 +37,9 @@ export default function Home() {
           <b>Inspired by JSONPlaceholder</b>
         </Typography.Paragraph>
         <Typography.Paragraph>
-          All data is generated with <b>faker</b> package on each request
+          All data is generated with{" "}
+          <a href="https://github.com/Marak/Faker.js#readme">faker</a> package
+          on each request
         </Typography.Paragraph>
       </div>
       <Divider></Divider>

@@ -96,7 +96,9 @@ const Templates = () => {
       <div className="title mt-30">
         <Typography.Title>Ready to use templates</Typography.Title>
         <Typography.Paragraph>
-          All data is generated with <b>faker</b> package on each request
+          All data is generated with{" "}
+          <a href="https://github.com/Marak/Faker.js#readme">faker</a> package
+          on each request
         </Typography.Paragraph>
       </div>
       <Divider></Divider>

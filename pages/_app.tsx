@@ -43,7 +43,7 @@ export default function MyApp({ Component, pageProps }) {
   return (
     <>
       <Head>
-        <title>Fake API | Schema generation tool</title>
+        <title>Mock API | Schema generation tool</title>
         <link rel="icon" href="/favicon.ico" />
         <link
           rel="stylesheet"
@@ -60,7 +60,7 @@ export default function MyApp({ Component, pageProps }) {
         <Header>
           <Link href="/">
             <span className="logo mr-15 underline noselect pointer">
-              Fake API | Schema generator
+              Mock API | Schema generator
             </span>
           </Link>
           <Menu
@@ -88,7 +88,7 @@ export default function MyApp({ Component, pageProps }) {
         </Content>
       </Layout>
       <Footer style={{ textAlign: "center" }}>
-        Fake API v.{app.version} | REST API Placeholder |{" "}
+        Mock API v.{app.version} | REST API Placeholder |{" "}
         <a
           target="_blank"
           rel="noopener"
@@ -100,7 +100,7 @@ export default function MyApp({ Component, pageProps }) {
         <a
           target="_blank"
           rel="noopener"
-          href="mailto:mitia2022@gmail.com?subject=Fake REST API Generator question"
+          href="mailto:mitia2022@gmail.com?subject=Mock REST API Generator question"
         >
           Contact me
         </a>{" "}
