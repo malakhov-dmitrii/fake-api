@@ -21,6 +21,7 @@
     "react-dom": "16.13.1",
     "react-gtm-module": "^2.0.10",
     "react-syntax-highlighter": "^13.0.0",
+    "react-yandex-metrika": "^2.6.0",
     "url": "^0.11.0",
     "uuid": "^8.3.0"
   },

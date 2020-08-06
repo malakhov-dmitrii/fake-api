@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import app from "../package.json";
 import { useEffect } from "react";
 import TagManager from "react-gtm-module";
+import { YMInitializer } from "react-yandex-metrika";
 
 const { Header, Content, Footer } = Layout;
 
@@ -38,6 +39,16 @@ export default function MyApp({ Component, pageProps }) {
         />
       </Head>
       <Layout className="layout">
+        <YMInitializer
+          accounts={[66221665]}
+          options={{
+            clickmap: true,
+            trackLinks: true,
+            accurateTrackBounce: true,
+            webvisor: true,
+          }}
+          version="2"
+        />
         <Header>
           <Link href="/">
             <span className="logo mr-15 underline noselect pointer">
