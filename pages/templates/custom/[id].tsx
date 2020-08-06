@@ -108,7 +108,7 @@ const CustomTemplate = (props) => {
   useEffect(() => {
     getSchemaData();
 
-    const baseURL = location?.origin || "https://fake-api-builder.vercel.app/";
+    const baseURL = location?.origin || "https://mock-api-builder.vercel.app/";
     let requestURL = `${baseURL}/api/schema/get/${id.toLowerCase()}`;
 
     if (isTemplatePage(id)) {
