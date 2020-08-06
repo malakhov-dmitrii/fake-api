@@ -53,6 +53,7 @@ export default function MyApp({ Component, pageProps }) {
           name="google-site-verification"
           content="x4xXwn1gLN0qwxkx1lMzcbZ6M3Y2VMN9eUE7kkrtkPo"
         />
+        <meta name="yandex-verification" content="70a1f32dfae2549f" />
       </Head>
       <Layout className="layout">
         <div dangerouslySetInnerHTML={{ __html: YAmetrica() }}></div>
